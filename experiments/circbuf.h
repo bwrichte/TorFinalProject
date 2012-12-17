@@ -1,7 +1,7 @@
 #ifndef CIRCBUF_H_
 #define CIRCBUF_H_
 
-#define BUFFER_SIZE 65536
+#define BUFFER_SIZE 4194304
 
 typedef struct CircBuffer {
     char buf[BUFFER_SIZE];

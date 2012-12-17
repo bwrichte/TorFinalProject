@@ -15,8 +15,11 @@
 #define COPY_BUFFER_SIZE 512
 #define MAX_PENDING 15
 #define TRUE 1
+#define FALSE 0
 
 static Monitor monitor;
+
+static int flag = FALSE;
 
 /* Helper to print a provided error message and the cause as determined by
    errno to stderr before exiting with a failure indicator of 1. */
@@ -24,6 +27,20 @@ static void printErrorAndExit(const char *errMsg)
 {
     perror(errMsg);
     exit(1);
+}
+
+static void *monitorBufferSize(void *data)
+{
+	(void) data;
+	while (!flag)
+	{
+		double frac = CircBuffer_Size(&monitor.cb) / (double) BUFFER_SIZE;
+		printf("%.2f\n", frac * 100);
+		sleep(1);
+	}
+	double frac = CircBuffer_Size(&monitor.cb) / (double) BUFFER_SIZE;
+	printf("%.2f\n", frac * 100);
+	return NULL;
 }
 
 static void *handleClientConnection(void *data)
@@ -38,7 +55,9 @@ static void *handleClientConnection(void *data)
     }
     
     if (read < 0)
+    {
         printErrorAndExit("relay: recv");
+    }
     
     Monitor_CloseBuffer(&monitor);
     
@@ -81,13 +100,17 @@ static void *handleServerConnection(void *data)
 static void handleConnection(int client_socket, struct sockaddr_in *server_addr)
 {
 	Monitor_Init(&monitor);
-	pthread_t reader, writer;
+	pthread_t reader, writer, overseer;
 	
     pthread_create(&reader, NULL, handleClientConnection, (void*) client_socket);
     pthread_create(&writer, NULL, handleServerConnection, (void*) server_addr);
+    pthread_create(&overseer, NULL, monitorBufferSize, NULL);
     
     pthread_join(reader, NULL);
     pthread_join(writer, NULL);
+    flag = TRUE;
+    pthread_join(overseer, NULL);
+    flag = FALSE;
 }
 
 int main(int argc, char *argv[])
