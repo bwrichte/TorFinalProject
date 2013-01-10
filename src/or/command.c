@@ -235,7 +235,7 @@ command_process_flowcontrol_cell(cell_t *cell, or_connection_t *conn)
     circuit_t *circ = circuit_get_by_circid_orconn(cell->circ_id, conn);
     uint32_t cells_fwded_neighbor;
     if (circ == NULL) return;
-    printf("Received Credit Chip\n");
+    //printf("Received Credit Chip\n");
     cells_fwded_neighbor = ntohl(get_uint32(cell->payload));
 
     /* IG: This is where we should do:
@@ -250,7 +250,7 @@ command_process_flowcontrol_cell(cell_t *cell, or_connection_t *conn)
     if (circ->n_conn == conn) {
        circ->credit_balance_n = N2+N3-(circ->cells_fwded_n-cells_fwded_neighbor);
        
-    	printf("Updating next hop credit balance to %d\n", circ->credit_balance_n);
+    	//printf("Updating next hop credit balance to %d\n", circ->credit_balance_n);
    	//circ->cells_fwded_n -= cells_fwded_neighbor;
 	//circ->credit_balance_n = N2 + N3 - circ->cells_fwded_n;
 	if (circ->credit_balance_n > 0) {
@@ -258,10 +258,8 @@ command_process_flowcontrol_cell(cell_t *cell, or_connection_t *conn)
 		circuit_resume_edge_reading(circ,NULL);
 	}	
     } else {
-    	int temp;
-        temp = TO_OR_CIRCUIT(circ)->credit_balance_p = N2 + N3 - (TO_OR_CIRCUIT(circ)->cells_fwded_p - cells_fwded_neighbor);
+        TO_OR_CIRCUIT(circ)->credit_balance_p = N2 + N3 - (TO_OR_CIRCUIT(circ)->cells_fwded_p - cells_fwded_neighbor);
         
-    	printf("Updating next hop credit balance to %d\n", temp);
 	//TO_OR_CIRCUIT(circ)->cells_fwded_p -= cells_fwded_neighbor;
     //TO_OR_CIRCUIT(circ)->credit_balance_p = N2 + N3 - circ->cells_fwded_n;
 	if ( TO_OR_CIRCUIT(circ)->credit_balance_p > 0) {

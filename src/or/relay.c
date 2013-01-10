@@ -175,6 +175,7 @@ circuit_receive_relay_cell(cell_t *cell, circuit_t *circ,
   char recognized=0;
   int reason;
 
+	//printf("Received relay cell\n");
   tor_assert(cell);
   tor_assert(circ);
   tor_assert(cell_direction == CELL_DIRECTION_OUT ||
@@ -188,9 +189,11 @@ circuit_receive_relay_cell(cell_t *cell, circuit_t *circ,
   }
 
   if (recognized) {
+  	//printf("Relay cell is for us\n");
     edge_connection_t *conn = relay_lookup_conn(circ, cell, cell_direction,
                                                 layer_hint);
     if (cell_direction == CELL_DIRECTION_OUT) {
+    	//printf("cell_direction == OUT\n");
       ++stats_n_relay_cells_delivered;
       log_debug(LD_OR,"Sending away from origin.");
       if ((reason=connection_edge_process_relay_cell(cell, circ, conn, NULL))
@@ -203,12 +206,15 @@ circuit_receive_relay_cell(cell_t *cell, circuit_t *circ,
 
       // For data going out on an exit router, need to consider sending flow control
       // back to middle hop (this doesn't happen otherwise)
+      //printf("Are we using N23?\n");
       if (get_options()->UseN23)
       {
+      		//printf("We are. Sending Credit Chip\n");
           connection_or_consider_sending_flowcontrol_cell(0, 0, circ, or_conn);
       }
     }
     if (cell_direction == CELL_DIRECTION_IN) {
+    	//printf("cell_direction == IN\n");
       ++stats_n_relay_cells_delivered;
       log_debug(LD_OR,"Sending to origin.");
       if ((reason = connection_edge_process_relay_cell(cell, circ, conn,
@@ -2440,6 +2446,8 @@ connection_or_flush_from_first_active_circuit(or_connection_t *conn, int max,
   circuit_t *circ;
   int streams_blocked;
 
+	//printf("Flushing from first active circuit\n");
+
   /* The current (hi-res) time */
   struct timeval now_hires;
 
@@ -2544,7 +2552,9 @@ connection_or_flush_from_first_active_circuit(or_connection_t *conn, int max,
 
 //mashael_N23
         if (get_options()->UseN23) {
+            //printf("Are we the not the origin?\n");
             if (!CIRCUIT_IS_ORIGIN(circ)) {// && (circ->n_conn)){
+	            //printf("No, we are not the origin -- sending flowcontrol cell.\n");
                 int credit_balance = connection_or_consider_sending_flowcontrol_cell(cell_direction_p, queue->n,circ,conn);
                 if (credit_balance <= 0) goto done;
             }
@@ -2693,7 +2703,7 @@ connection_or_consider_sending_flowcontrol_cell(int cell_direction_p, int nBuffe
     or_connection_t *previous_or = NULL;
     circid_t circ_id;
 
-	printf("Considering sending a credit chip...\n");
+	// printf("Considering sending a credit chip...\n");
     /* IG: In this function, we should reset cells_fwded_{n,p} after
      * calling connection_or_send_flowcontrol().  (And then just check
      * == N2 (and assert <= N2) instead of (% N2 == 0).) */

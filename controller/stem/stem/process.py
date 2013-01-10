@@ -128,7 +128,7 @@ def launch_tor(tor_cmd = "tor", args = None, torrc_path = None, completion_perce
 
   while True:
     init_line = tor_process.stdout.readline().strip()
-
+    print init_line
     # this will provide empty results if the process is terminated
     if not init_line:
       if timeout:

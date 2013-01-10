@@ -14,6 +14,6 @@
 #
 #   Would you like to stop the tor instance we made? (y/n, default: n): y
 
-python -i -c "import test.prompt; test.prompt.print_usage(); controller = test.prompt.controller()"
+python -i -c "import test.prompt; test.prompt.print_usage(); controller = test.prompt.controller($1)"
 python -c "import test.prompt; test.prompt.stop(True)"
 

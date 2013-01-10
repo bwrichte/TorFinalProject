@@ -38,19 +38,79 @@ def print_usage():
   print
 
 
-def start():
+def start(orType = 1):
   """
   Starts up a tor instance that we can attach a controller to.
   """
 
-  tor_config = {
-    'SocksPort': '0',
-    'ControlPort': str(CONTROL_PORT),
-    'ExitPolicy': 'reject *:*',
-  }
+  tor_config = None
+  if orType == 1: #OP
+    tor_config = {
+      'SocksPort': '0',
+      'ControlPort': str(CONTROL_PORT),
+      'ExitPolicy': 'reject *:*',
+      'UseN23' : '1',
+      'N3Initial': '500',
+      'N3Max' : '500',
+      'N3Min': '100',
+      '__DisablePredictedCircuits' : '1',
+      'MaxOnionsPending' : '0',
+      'newcircuitperiod' : '999999999',
+      'maxcircuitdirtiness' : '999999999',
+    }
+  elif orType == 2: #Entry
+    tor_config = {
+        'SocksPort': '0',
+        'ControlPort': str(CONTROL_PORT),
+        'UseN23' : '1',
+        'N3Initial': '500',
+        'N3Max' : '500',
+        'N3Min': '100',
+        '__DisablePredictedCircuits' : '1',
+        'MaxOnionsPending' : '0',
+        'newcircuitperiod' : '999999999',
+        'maxcircuitdirtiness' : '999999999',
+        'Nickname' : 'N23TestEntry',
+        'ExitPolicy': 'accept *:80, reject *:*',
+        'ContactInfo': 'bwrichte@princeton.edu',
+    }
+  elif orType == 3: #Middle
+    tor_config = {
+        'SocksPort': '0',
+        'ControlPort': str(CONTROL_PORT),
+        'UseN23' : '1',
+        'N3Initial': '500',
+        'N3Max' : '500',
+        'N3Min': '100',
+        '__DisablePredictedCircuits' : '1',
+        'MaxOnionsPending' : '0',
+        'newcircuitperiod' : '999999999',
+        'maxcircuitdirtiness' : '999999999',
+        'Nickname' : 'N23TestMiddle',
+        'ExitPolicy': 'accept *:80, reject *:*',
+        'ContactInfo': 'bwrichte@princeton.edu',
+    }
+  elif orType == 4: #Exit
+    tor_config = {
+        'SocksPort': '0',
+        'ControlPort': str(CONTROL_PORT),
+        'UseN23' : '1',
+        'N3Initial': '500',
+        'N3Max' : '500',
+        'N3Min': '100',
+        '__DisablePredictedCircuits' : '1',
+        'MaxOnionsPending' : '0',
+        'newcircuitperiod' : '999999999',
+        'maxcircuitdirtiness' : '999999999',
+        'Nickname' : 'N23TestExit',
+        'ExitPolicy': 'accept *:80, reject *:*',
+        'ContactInfo': 'bwrichte@princeton.edu',
+    }
+  else:
+    raise OSError('Ah hell no')
 
   sys.stdout.write("Starting tor...")
-  stem.process.launch_tor_with_config(config = tor_config, completion_percent = 5)
+  stem.process.launch_tor_with_config(config = tor_config, completion_percent = 80)
   sys.stdout.write("  done\n\n")
 
 
@@ -85,14 +145,14 @@ def is_running():
   return bool(stem.util.system.get_pid_by_port(CONTROL_PORT))
 
 
-def controller():
+def controller(orType = 1):
   """
   Provides a Controller for our tor instance. This starts tor if it isn't
   already running.
   """
 
   if not is_running():
-    start()
+    start(orType)
 
   controller = stem.control.Controller.from_port(control_port = CONTROL_PORT)
   controller.authenticate()
