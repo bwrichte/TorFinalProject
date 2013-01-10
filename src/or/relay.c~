@@ -2693,7 +2693,6 @@ connection_or_consider_sending_flowcontrol_cell(int cell_direction_p, int nBuffe
     or_connection_t *previous_or = NULL;
     circid_t circ_id;
 
-	printf("Considering sending a credit chip...\n");
     /* IG: In this function, we should reset cells_fwded_{n,p} after
      * calling connection_or_send_flowcontrol().  (And then just check
      * == N2 (and assert <= N2) instead of (% N2 == 0).) */

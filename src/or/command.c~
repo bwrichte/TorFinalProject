@@ -258,10 +258,7 @@ command_process_flowcontrol_cell(cell_t *cell, or_connection_t *conn)
 		circuit_resume_edge_reading(circ,NULL);
 	}	
     } else {
-    	int temp;
-        temp = TO_OR_CIRCUIT(circ)->credit_balance_p = N2 + N3 - (TO_OR_CIRCUIT(circ)->cells_fwded_p - cells_fwded_neighbor);
-        
-    	printf("Updating next hop credit balance to %d\n", temp);
+        TO_OR_CIRCUIT(circ)->credit_balance_p = N2 + N3 - (TO_OR_CIRCUIT(circ)->cells_fwded_p - cells_fwded_neighbor);
 	//TO_OR_CIRCUIT(circ)->cells_fwded_p -= cells_fwded_neighbor;
     //TO_OR_CIRCUIT(circ)->credit_balance_p = N2 + N3 - circ->cells_fwded_n;
 	if ( TO_OR_CIRCUIT(circ)->credit_balance_p > 0) {
