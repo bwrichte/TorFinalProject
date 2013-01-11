@@ -58,11 +58,15 @@ def start(orType = 1):
       'MaxOnionsPending' : '0',
       'newcircuitperiod' : '999999999',
       'maxcircuitdirtiness' : '999999999',
+      'TestingTorNetwork' : '1',
+      'ServerDNSDetectHijacking' : '0',
+      'DirServer' : 'auth1, v3ident=0045EE8DDC17CD5F8B677885369DC3AF040438E9, 1.1.1.1:9030, B262C643A510C00DBE3F659572D8729D90552EDA',
+      'DataDirectory' : '/opt/tor',
     }
   elif orType == 2: #Entry
     tor_config = {
         'SocksListenAddress': '127.0.0.1',
-        'SocksPort': 'auto',
+        'SocksPort': '9050',
         'ORPort' : '9001',
         'DirPort': '0',
         'RelayBandwidthRate' : '100 KBytes',
@@ -79,11 +83,16 @@ def start(orType = 1):
         'Nickname' : 'N23TestEntry',
         'ExitPolicy': 'accept *:80, reject *:*',
         'ContactInfo': 'bwrichte at princeton dot edu',
+        'TestingTorNetwork' : '1',
+        'ServerDNSDetectHijacking' : '0',
+        'DirServer' : 'auth1, v3ident=0045EE8DDC17CD5F8B677885369DC3AF040438E9, 1.1.1.1:9030, B262C643A510C00DBE3F659572D8729D90552EDA',
+        'DataDirectory' : '/opt/tor',
     }
   elif orType == 3: #Middle
     tor_config = {
         'SocksListenAddress': '127.0.0.1',
-        'SocksPort': 'auto',
+        'SocksPort': '9050',
+        'ORPort' : '9001',
         'ControlPort': str(CONTROL_PORT),
         'DirPort': '0',
         'UseN23' : '1',
@@ -97,11 +106,16 @@ def start(orType = 1):
         'Nickname' : 'N23TestMiddle',
         'ExitPolicy': 'accept *:80, reject *:*',
         'ContactInfo': 'bwrichte at princeton dot edu',
+        'TestingTorNetwork' : '1',
+        'ServerDNSDetectHijacking' : '0',
+        'DirServer' : 'auth1, v3ident=0045EE8DDC17CD5F8B677885369DC3AF040438E9, 1.1.1.1:9030, B262C643A510C00DBE3F659572D8729D90552EDA',
+        'DataDirectory' : '/opt/tor',
     }
   elif orType == 4: #Exit
     tor_config = {
         'SocksListenAddress': '127.0.0.1',
-        'SocksPort': 'auto',
+        'SocksPort': '9050',
+        'ORPort' : '9001',
         'ControlPort': str(CONTROL_PORT),
         'DirPort': '0',
         'UseN23' : '1',
@@ -115,6 +129,10 @@ def start(orType = 1):
         'Nickname' : 'N23TestExit',
         'ExitPolicy': 'accept *:80, reject *:*',
         'ContactInfo': 'bwrichte at princeton dot edu',
+        'TestingTorNetwork' : '1',
+        'ServerDNSDetectHijacking' : '0',
+        'DirServer' : 'auth1, v3ident=0045EE8DDC17CD5F8B677885369DC3AF040438E9, 1.1.1.1:9030, B262C643A510C00DBE3F659572D8729D90552EDA',
+        'DataDirectory' : '/opt/tor',
     }
   else:
     raise OSError('Ah hell no')
