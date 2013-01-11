@@ -46,22 +46,28 @@ def start(orType = 1):
   tor_config = None
   if orType == 1: #OP
     tor_config = {
-      'SocksListenAddress': '127.0.0.1',
-      'SocksPort' : '9050',
-      'ControlPort': str(CONTROL_PORT),
-      'ExitPolicy': 'reject *:*',
-      'UseN23' : '1',
-      'N3Initial': '500',
-      'N3Max' : '500',
-      'N3Min': '100',
-      '__DisablePredictedCircuits' : '1',
-      'MaxOnionsPending' : '0',
-      'newcircuitperiod' : '999999999',
-      'maxcircuitdirtiness' : '999999999',
-      'TestingTorNetwork' : '1',
-      'ServerDNSDetectHijacking' : '0',
-      'DirServer' : 'auth1 v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31 10.1.3.2:9030 62C78AE9C12932E66EDB8F808848B19896B3EF86',
-      'DataDirectory' : '/opt/tor',
+        'SocksListenAddress': '127.0.0.1',
+        'SocksPort': '9050',
+        'ORPort' : '9001',
+        'DirPort': '0',
+        'RelayBandwidthRate' : '100 KBytes',
+        'RelayBandwidthBurst' : '200 KBytes',
+        'ControlPort': str(CONTROL_PORT),
+        'UseN23' : '1',
+        'N3Initial': '500',
+        'N3Max' : '500',
+        'N3Min': '100',
+        '__DisablePredictedCircuits' : '1',
+        'MaxOnionsPending' : '0',
+        'newcircuitperiod' : '999999999',
+        'maxcircuitdirtiness' : '999999999',
+        'Nickname' : 'N23TestOP',
+        'ExitPolicy': 'accept *:80, reject *:*',
+        'ContactInfo': 'bwrichte at princeton dot edu',
+        'TestingTorNetwork' : '1',
+        'ServerDNSDetectHijacking' : '0',
+        'DirServer' : 'auth1 v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31 10.1.3.2:9030 62C78AE9C12932E66EDB8F808848B19896B3EF86',
+        'DataDirectory' : '/users/bwrichte/op',
     }
   elif orType == 2: #Entry
     tor_config = {
@@ -86,7 +92,7 @@ def start(orType = 1):
         'TestingTorNetwork' : '1',
         'ServerDNSDetectHijacking' : '0',
         'DirServer' : 'auth1 v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31 10.1.3.2:9030 62C78AE9C12932E66EDB8F808848B19896B3EF86',
-        'DataDirectory' : '/opt/tor',
+        'DataDirectory' : '/users/bwrichte/entry',
     }
   elif orType == 3: #Middle
     tor_config = {
@@ -109,7 +115,7 @@ def start(orType = 1):
         'TestingTorNetwork' : '1',
         'ServerDNSDetectHijacking' : '0',
         'DirServer' : 'auth1 v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31 10.1.3.2:9030 62C78AE9C12932E66EDB8F808848B19896B3EF86',
-        'DataDirectory' : '/opt/tor',
+        'DataDirectory' : '/users/bwrichte/middle',
     }
   elif orType == 4: #Exit
     tor_config = {
@@ -132,7 +138,7 @@ def start(orType = 1):
         'TestingTorNetwork' : '1',
         'ServerDNSDetectHijacking' : '0',
         'DirServer' : 'auth1 v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31 10.1.3.2:9030 62C78AE9C12932E66EDB8F808848B19896B3EF86',
-        'DataDirectory' : '/opt/tor',
+        'DataDirectory' : '/users/bwrichte/exit',
     }
   else:
     raise OSError('Ah hell no')
