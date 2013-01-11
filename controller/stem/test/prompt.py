@@ -46,7 +46,7 @@ def start(orType = 1):
   tor_config = None
   if orType == 1: #OP
     tor_config = {
-      'SocksPort': '0',
+      'SocksPort' : '9050',
       'ControlPort': str(CONTROL_PORT),
       'ExitPolicy': 'reject *:*',
       'UseN23' : '1',
@@ -61,6 +61,9 @@ def start(orType = 1):
   elif orType == 2: #Entry
     tor_config = {
         'SocksPort': '0',
+        'ORPort' : '9001',
+        'RelayBandwidthRate' : '100 KBytes',
+        'RelayBandwidthBurst' : '200 KBytes',
         'ControlPort': str(CONTROL_PORT),
         'UseN23' : '1',
         'N3Initial': '500',
