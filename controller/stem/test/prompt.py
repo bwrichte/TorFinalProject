@@ -46,6 +46,7 @@ def start(orType = 1):
   tor_config = None
   if orType == 1: #OP
     tor_config = {
+      'SocksListenAddress': '127.0.0.1',
       'SocksPort' : '9050',
       'ControlPort': str(CONTROL_PORT),
       'ExitPolicy': 'reject *:*',
@@ -60,8 +61,10 @@ def start(orType = 1):
     }
   elif orType == 2: #Entry
     tor_config = {
-        'SocksPort': '0',
+        'SocksListenAddress': '127.0.0.1',
+        'SocksPort': 'auto',
         'ORPort' : '9001',
+        'DirPort': '0',
         'RelayBandwidthRate' : '100 KBytes',
         'RelayBandwidthBurst' : '200 KBytes',
         'ControlPort': str(CONTROL_PORT),
@@ -75,12 +78,14 @@ def start(orType = 1):
         'maxcircuitdirtiness' : '999999999',
         'Nickname' : 'N23TestEntry',
         'ExitPolicy': 'accept *:80, reject *:*',
-        'ContactInfo': 'bwrichte@princeton.edu',
+        'ContactInfo': 'bwrichte at princeton dot edu',
     }
   elif orType == 3: #Middle
     tor_config = {
-        'SocksPort': '0',
+        'SocksListenAddress': '127.0.0.1',
+        'SocksPort': 'auto',
         'ControlPort': str(CONTROL_PORT),
+        'DirPort': '0',
         'UseN23' : '1',
         'N3Initial': '500',
         'N3Max' : '500',
@@ -91,12 +96,14 @@ def start(orType = 1):
         'maxcircuitdirtiness' : '999999999',
         'Nickname' : 'N23TestMiddle',
         'ExitPolicy': 'accept *:80, reject *:*',
-        'ContactInfo': 'bwrichte@princeton.edu',
+        'ContactInfo': 'bwrichte at princeton dot edu',
     }
   elif orType == 4: #Exit
     tor_config = {
-        'SocksPort': '0',
+        'SocksListenAddress': '127.0.0.1',
+        'SocksPort': 'auto',
         'ControlPort': str(CONTROL_PORT),
+        'DirPort': '0',
         'UseN23' : '1',
         'N3Initial': '500',
         'N3Max' : '500',
@@ -107,7 +114,7 @@ def start(orType = 1):
         'maxcircuitdirtiness' : '999999999',
         'Nickname' : 'N23TestExit',
         'ExitPolicy': 'accept *:80, reject *:*',
-        'ContactInfo': 'bwrichte@princeton.edu',
+        'ContactInfo': 'bwrichte at princeton dot edu',
     }
   else:
     raise OSError('Ah hell no')
