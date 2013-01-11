@@ -60,7 +60,7 @@ def start(orType = 1):
       'maxcircuitdirtiness' : '999999999',
       'TestingTorNetwork' : '1',
       'ServerDNSDetectHijacking' : '0',
-      'DirServer' : 'auth1, v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31, 10.1.3.2:9030,  62C78AE9C12932E66EDB8F808848B19896B3EF86',
+      'DirServer' : 'auth1 v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31 10.1.3.2:9030 62C78AE9C12932E66EDB8F808848B19896B3EF86',
       'DataDirectory' : '/opt/tor',
     }
   elif orType == 2: #Entry
@@ -85,7 +85,7 @@ def start(orType = 1):
         'ContactInfo': 'bwrichte at princeton dot edu',
         'TestingTorNetwork' : '1',
         'ServerDNSDetectHijacking' : '0',
-        'DirServer' : 'auth1, v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31, 10.1.3.2:9030,  62C78AE9C12932E66EDB8F808848B19896B3EF86',
+        'DirServer' : 'auth1 v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31 10.1.3.2:9030 62C78AE9C12932E66EDB8F808848B19896B3EF86',
         'DataDirectory' : '/opt/tor',
     }
   elif orType == 3: #Middle
@@ -108,7 +108,7 @@ def start(orType = 1):
         'ContactInfo': 'bwrichte at princeton dot edu',
         'TestingTorNetwork' : '1',
         'ServerDNSDetectHijacking' : '0',
-        'DirServer' : 'auth1, v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31, 10.1.3.2:9030,  62C78AE9C12932E66EDB8F808848B19896B3EF86',
+        'DirServer' : 'auth1 v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31 10.1.3.2:9030 62C78AE9C12932E66EDB8F808848B19896B3EF86',
         'DataDirectory' : '/opt/tor',
     }
   elif orType == 4: #Exit
@@ -131,7 +131,7 @@ def start(orType = 1):
         'ContactInfo': 'bwrichte at princeton dot edu',
         'TestingTorNetwork' : '1',
         'ServerDNSDetectHijacking' : '0',
-        'DirServer' : 'auth1, v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31, 10.1.3.2:9030,  62C78AE9C12932E66EDB8F808848B19896B3EF86',
+        'DirServer' : 'auth1 v3ident=43580C5C0C3308CEE06162D3C97F291364A00E31 10.1.3.2:9030 62C78AE9C12932E66EDB8F808848B19896B3EF86',
         'DataDirectory' : '/opt/tor',
     }
   else:
