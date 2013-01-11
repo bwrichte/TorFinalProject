@@ -138,7 +138,7 @@ def start(orType = 1):
     raise OSError('Ah hell no')
 
   sys.stdout.write("Starting tor...")
-  stem.process.launch_tor_with_config(config = tor_config, completion_percent = 80)
+  stem.process.launch_tor_with_config(config = tor_config, completion_percent = 50)
   sys.stdout.write("  done\n\n")
 
 
