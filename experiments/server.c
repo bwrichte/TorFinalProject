@@ -14,6 +14,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #define MIN_PORT 1
 #define MAX_PORT 65535
@@ -43,27 +44,73 @@ static void printErrorAndExit(const char *errMsg)
     exit(1);
 }
 
+ static int
+ timeval_subtract (struct timeval *result, struct timeval *x, struct timeval *y)
+ {
+   /* Perform the carry for the later subtraction by updating y. */
+   if (x->tv_usec < y->tv_usec) {
+     int nsec = (y->tv_usec - x->tv_usec) / 1000000 + 1;
+     y->tv_usec -= 1000000 * nsec;
+     y->tv_sec += nsec;
+   }
+   if (x->tv_usec - y->tv_usec > 1000000) {
+     int nsec = (x->tv_usec - y->tv_usec) / 1000000;
+     y->tv_usec += 1000000 * nsec;
+     y->tv_sec -= nsec;
+   }
+
+   /* Compute the time remaining to wait.
+      tv_usec is certainly positive. */
+   result->tv_sec = x->tv_sec - y->tv_sec;
+   result->tv_usec = x->tv_usec - y->tv_usec;
+
+   /* Return 1 if result is negative. */
+   return x->tv_sec < y->tv_sec;
+ }
+
 /* Helper to read data from the client socket connection and echo all the data
    to stdout. Note: this helper could be used in multithreadedness. */
 static void handleConnection(int client_socket)
 {
     char buffer[BUFFER_SIZE+1];
     int read;
+    unsigned long int readTotal, readTotalTotal = 0;
+    struct timeval startTime, originalStartTime, curTime, diff;
     
+    gettimeofday(&startTime, NULL);
+    originalStartTime = startTime;
+    
+    int sec = 1;
     LOG("Beginning Reading from client socket %d\n", client_socket);
     while ((read = recv(client_socket, buffer, BUFFER_SIZE, 0 /*no flags*/)) > 0)
     {
     	LOG("Read %d bytes\n", read);
     	/* ensure the buffer is null terminated to avoid overrun */
         buffer[read] = '\0';
-        fprintf(stdout, "%s", buffer);
+        
+        readTotal += read;
+        readTotalTotal += read;
+        
+        gettimeofday(&curTime, NULL);
+        timeval_subtract(&diff, &curTime, &startTime);
+        if (diff.tv_sec >= 1)
+        {
+            fprintf(stdout, "%d %lu\n", sec++, readTotal);
+            startTime = curTime;
+            readTotal = 0;
+        }
     }
+    
+    gettimeofday(&curTime, NULL);
+    timeval_subtract(&diff, &curTime, &originalStartTime);
+    fprintf(stdout, "%lu %lu %lu\n", diff.tv_sec, diff.tv_usec, readTotalTotal);    
     
     if (read < 0)
         printErrorAndExit("server: recv");
     
     LOG("Closing Client Socket %d\n", client_socket);
     close(client_socket);
+    fflush(stdout);
 }
 
 int main(int argc, char *argv[])
