@@ -68,6 +68,7 @@ def start(orType = 1):
         'ServerDNSDetectHijacking' : '0',
         'DirServer': 'auth1 v3ident=326F145D8F72827F092A6B60B5E122351AB027C9 10.1.3.2:9030 3F6C1B325BFE643004720E4BAA8526ADDB2F9A07',
         'DataDirectory' : '/users/bwrichte/op',
+        'Log' : 'info file /users/bwrichte/op/log/tor.log',
     }
   elif orType == 2: #Entry
     tor_config = {
@@ -93,6 +94,7 @@ def start(orType = 1):
         'ServerDNSDetectHijacking' : '0',
         'DirServer': 'auth1 v3ident=326F145D8F72827F092A6B60B5E122351AB027C9 10.1.3.2:9030 3F6C1B325BFE643004720E4BAA8526ADDB2F9A07',
         'DataDirectory' : '/users/bwrichte/entry',
+        'Log' : 'info file /users/bwrichte/entry/log/tor.log',
     }
   elif orType == 3: #Middle
     tor_config = {
@@ -116,6 +118,7 @@ def start(orType = 1):
         'ServerDNSDetectHijacking' : '0',
         'DirServer': 'auth1 v3ident=326F145D8F72827F092A6B60B5E122351AB027C9 10.1.3.2:9030 3F6C1B325BFE643004720E4BAA8526ADDB2F9A07',
         'DataDirectory' : '/users/bwrichte/middle',
+        'Log' : 'info file /users/bwrichte/middle/log/tor.log',
     }
   elif orType == 4: #Exit
     tor_config = {
@@ -139,6 +142,7 @@ def start(orType = 1):
         'ServerDNSDetectHijacking' : '0',
         'DirServer': 'auth1 v3ident=326F145D8F72827F092A6B60B5E122351AB027C9 10.1.3.2:9030 3F6C1B325BFE643004720E4BAA8526ADDB2F9A07',
         'DataDirectory' : '/users/bwrichte/exit',
+        'Log' : 'info file /users/bwrichte/exit/log/tor.log',
     }
   else:
     raise OSError('Ah hell no')
